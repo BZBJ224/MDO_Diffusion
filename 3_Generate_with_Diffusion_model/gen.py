@@ -1,5 +1,6 @@
 from imagen_pytorch import Unet, Imagen, ImagenTrainer
 from torchvision.utils import save_image
+import os
 
 # unets for unconditional imagen
 
@@ -40,4 +41,5 @@ for i in range(25):
         images = trainer.sample(texts=jj,cond_scale=3.,return_pil_images = True)
         for k in range(len(images)):
             images[k].save(f'./gen/{j}/sample-{i}-{k}.png')
+
 
