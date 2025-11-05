@@ -33,9 +33,11 @@ A,B,C,D = ['A' for i in range(32)],['B' for i in range(32)],\
                  ['C' for i in range(32)],['D' for i in range(32)]
 
 label  = {'A':A,'B':B,'C':C,'D':D}
-
+os.makedirs('gen', exist_ok=True)
 for i in range(25):
     for j, jj in label.items():
+        os.makedirs('gen/%s'%j, exist_ok=True)
         images = trainer.sample(texts=jj,cond_scale=3.,return_pil_images = True)
         for k in range(len(images)):
             images[k].save(f'./gen/{j}/sample-{i}-{k}.png')
+
