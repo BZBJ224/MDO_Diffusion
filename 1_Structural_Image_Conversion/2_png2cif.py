@@ -21,10 +21,11 @@ def fix_rotate(PATH_PNG):
     PATH_FIX = '%s/TMP'%PATH_PNG
     os.makedirs(PATH_FIX, exist_ok=True)
     for i in filename:
-        im = Image.open('%s/%s'%(PATH_PNG, i))
-        im = rotate(im)
-        img = Image.fromarray(im)
-        img.save('%s/%s'%(PATH_FIX, i))
+        if i.split('.') == 'png':
+            im = Image.open('%s/%s'%(PATH_PNG, i))
+            im = rotate(im)
+            img = Image.fromarray(im)
+            img.save('%s/%s'%(PATH_FIX, i))
 
 def main(PATH_CIF, PATH_PNG):
     fix_rotate(PATH_PNG)
@@ -45,4 +46,5 @@ def main(PATH_CIF, PATH_PNG):
 if __name__ == '__main__':
     PATH_CIF = '/path/to/cif'
     PATH_PNG = '/path/to/png'
+    os.makedirs(PATH_CIF, exist_ok=True)
     main(PATH_CIF, PATH_PNG)
