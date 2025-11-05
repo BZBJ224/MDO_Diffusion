@@ -21,7 +21,7 @@ def fix_rotate(PATH_PNG):
     PATH_FIX = '%s/TMP'%PATH_PNG
     os.makedirs(PATH_FIX, exist_ok=True)
     for i in filename:
-        if i.split('.') == 'png':
+        if i.split('.')[-1] == 'png':
             im = Image.open('%s/%s'%(PATH_PNG, i))
             im = rotate(im)
             img = Image.fromarray(im)
@@ -32,7 +32,7 @@ def main(PATH_CIF, PATH_PNG):
     pad = np.array([0.5,0.5,0.5])
     filename = os.listdir('%s/TMP'%PATH_PNG)
     for i in tqdm(filename):
-        img = rgb2gray(np.array(Image.open('%s/TMP/%s'%(PATH_PNG,filename)).convert('RGB')))
+        img = rgb2gray(np.array(Image.open('%s/TMP/%s'%(PATH_PNG,i)).convert('RGB')))
         try:
             atoms, energy = decode(np.array(img)/255, pad)
             dis = atoms.get_distance([atom.index for atom in atoms if atom.symbol == 'C'][0],
@@ -48,3 +48,4 @@ if __name__ == '__main__':
     PATH_PNG = '/path/to/png'
     os.makedirs(PATH_CIF, exist_ok=True)
     main(PATH_CIF, PATH_PNG)
+
