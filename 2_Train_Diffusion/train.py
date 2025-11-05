@@ -1,4 +1,4 @@
-import torch
+import torch, os
 from imagen_pytorch import Unet, Imagen, NullUnet, ImagenTrainer
 from torchvision.utils import save_image
 from src.labeldata import labeldata
@@ -29,12 +29,12 @@ trainer = ImagenTrainer(imagen)
 # mock images (get a lot of this) and text encodings from large T5
 
 img, texts = labeldata('./png')
-
+os.makedirs('images', exist_ok=True)
 # feed images into imagen, training each unet in the cascade
 low = 1000
 loss = 1000
 for i in range(200000):
-    if loss < low:
+    if loss < low and i%100 == 0:
         low = loss
         trainer.save('./diff.pt')
     loss = trainer(img,texts=texts,max_batch_size=16)
@@ -46,3 +46,4 @@ for i in range(200000):
                                        'C','C','C','C','D','D','D','D'],cond_scale=3.) # returns List[Image]
         save_image(images[:].view(-1,3,128,128), "images/%d.png" % (i // 100), nrow=4, normalize=True)
    
+
